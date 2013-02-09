@@ -32,6 +32,9 @@ Rickshaw.Graph = function(args) {
 
 		this.setSize({ width: args.width, height: args.height });
 
+                this.xScale = args.xScale || d3.scale.linear()
+                this.yScale = args.yScale || d3.scale.linear()
+
 		this.element.classList.add('rickshaw_graph');
 		this.vis = d3.select(this.element)
 			.append("svg:svg")
@@ -100,11 +103,11 @@ Rickshaw.Graph = function(args) {
 
 		var domain = this.renderer.domain();
 
-		this.x = d3.scale.linear().domain(domain.x).range([0, this.width]);
+		this.x = this.yScale.domain(domain.x).range([0, this.width]);
 
-		this.y = d3.scale.linear().domain(domain.y).range([this.height, 0]);
+		this.y = this.xScale.domain(domain.y).range([this.height, 0]);
 
-		this.y.magnitude = d3.scale.linear()
+		this.y.magnitude = this.yScale
 			.domain([domain.y[0] - domain.y[0], domain.y[1] - domain.y[0]])
 			.range([0, this.height]);
 	};
